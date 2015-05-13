@@ -26,9 +26,12 @@ flags.define_string("filter_vocab", "", "Filter entries based on vocabulary")
 flags.define_bool("stem", False, "Stem words")
 flags.define_bool("id_strings", False, "Add identical strings")
 
-# generate an updated vocab: note not all the words in the original vocab will be included 
-# in the generated wordnet, generate a new vocab only contains the words in the wordnet.
+# generate an updated vocab: note not all the words
+# in the original vocab will be included
+# in the generated wordnet, generate a new vocab
+# only contains the words in the wordnet.
 flags.define_string("updated_vocab", "", "generate a new vocab")
+
 
 def greedy_german_matching(filter_list, limit, stem):
   stemmer = Snowball()

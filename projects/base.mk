@@ -43,13 +43,13 @@ PATH:=$(PATH):/sw/bin/:/opt/local/bin/:/usr/local/bin/
 PYTHON_SOURCE=../../lib/python_lib/topicmod
 
 GSL_INC := `gsl-config --cflags`
-INCLUDEDIRS =-I../../../ -I/opt/local/include/ \
+INCLUDEDIRS =  -I../../../ -I/opt/local/include/ \
 	-I/fs/clip-software/boost_1_40_0/include \
 	-I/fs/clip-software/protobuf-2.3.0b/$(ARCH)/include/ \
 	-I/usr/local/include/ -I/usr/local/include/boost_1_40_0 $(GSL_INC)
 
 GSL_LIB := `gsl-config --libs`
-LIBDIRS =-L/fs/clip-software/protobuf-2.3.0b/$(ARCH)/lib/ -L/usr/local/lib/ \
+LIBDIRS = -L/fs/clip-software/protobuf-2.3.0b/$(ARCH)/lib/ -L/usr/local/lib/ \
 	 -L/opt/local/lib -L/fs/clip-software/boost_1_40_0/$(ARCH)/lib/ \
 	 -lpthread -lprotobuf $(GSL_LIB)
 
@@ -89,23 +89,23 @@ $(PROTO_OUT): ../../lib/corpora/proto/corpus.proto
 	protoc ../../lib/corpora/proto/corpus.proto --proto_path=../../lib/corpora/proto --cpp_out=../../lib/corpora/proto --python_out=$(PYTHON_SOURCE)/corpora/proto
 
 $(PROTO_OBJ): $(PROTO_OUT)
-	$(GPP) $(CFLAGS) $(INCLUDEDIRS) $(LIBDIRS) -c $(PROTO_CPP)
+	$(GPP) $(CFLAGS) $(INCLUDEDIRS) -c $(PROTO_CPP) $(LIBDIRS)
 
 $(WORDNET_PROTO_OUT) $(WORDNET_PROTO_OBJ): $(WORDNET_PROTO_DEP)
 	protoc -I=$(LDAWN_PATH)/src/ --python_out=$(PYTHON_SOURCE)/corpora/proto --cpp_out=$(LDAWN_PATH)/src/ $(LDAWN_PATH)/src/wordnet_file.proto
-	$(GPP) $(CFLAGS) $(INCLUDEDIRS) $(LIBDIRS) -c $(LDAWN_PATH)/src/wordnet_file.pb.cc
+	$(GPP) $(CFLAGS) $(INCLUDEDIRS) -c $(LDAWN_PATH)/src/wordnet_file.pb.cc $(LIBDIRS)
 
 $(CORPUS_OBJ): $(CORPUS_DEP) $(PROTO_OUT)
 	cpplint.py $(LINT_OPTIONS) $(CORPUS_DEP)
-	$(GPP) $(CFLAGS) $(INCLUDEDIRS) $(LIBDIRS) -c $(CORPUS_CPP)
+	$(GPP) $(CFLAGS) $(INCLUDEDIRS) -c $(CORPUS_CPP) $(LIBDIRS)
 
 $(UTIL_OBJ): $(UTIL_DEP)
 	cpplint.py $(LINT_OPTIONS) $(UTIL_DEP)
-	$(GPP) $(CFLAGS) $(INCLUDEDIRS) $(LIBDIRS) -c $(UTIL_CPP)
+	$(GPP) $(CFLAGS) $(INCLUDEDIRS) -c $(UTIL_CPP) $(LIBDIRS)
 
 $(SAMPLER_OBJ): $(SAMPLER_DEP)
 	cpplint.py $(LINT_OPTIONS) $(SAMPLER_DEP)
-	$(GPP) $(CFLAGS) $(INCLUDEDIRS) $(LIBDIRS) -c $(SAMPLER_CPP)
+	$(GPP) $(CFLAGS) $(INCLUDEDIRS) -c $(SAMPLER_CPP) $(LIBDIRS)
 
 OBJ_FILES=$(CORPUS_OBJ) $(PROTO_OBJ) $(UTIL_OBJ) $(SAMPLER_OBJ)
 
